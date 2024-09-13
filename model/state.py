@@ -11,6 +11,8 @@ class State:
     Area: float
     Population: int
     Neighbors: []
+    Nall: int
+    Nshape: int
 
     def __str__(self):
         return self.Name
