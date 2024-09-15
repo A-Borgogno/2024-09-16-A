@@ -46,20 +46,30 @@ class Controller:
         self._view.txt_result1.controls.clear()
         self._model.create_graph(latitude, longitude, shape)
         self._view.txt_result1.controls.append(ft.Text(f"Numero di vertici: {self._model.get_num_of_nodes()}"))
-        self._view.txt_result1.controls.append(ft.Text(f"Numero di archi: {self._model.get_num_of_edges()}"))
-        # self._view.txt_result1.controls.append(
-        #     ft.Text(f"Il grafo ha: {self._model.get_num_connesse()} componenti connesse"))
-        # connessa = self._model.get_largest_connessa()
-        # self._view.txt_result1.controls.append(ft.Text(f"La componente connessa più grande "
-        #                                                    f"è costituita da {len(connessa)} nodi:"))
-        # for c in connessa:
-        #     self._view.txt_result1.controls.append(ft.Text(c))
+        self._view.txt_result1.controls.append(ft.Text(f"Numero di archi: {self._model.get_num_of_edges()}\n"))
+
+        top5_nodes = self._model.get_top5_nodi()
+        self._view.txt_result1.controls.append(ft.Text(f"I 5 nodi di grado maggiore sono:"))
+        for n in top5_nodes:
+            self._view.txt_result1.controls.append(ft.Text(f"{n[0]} -> degree: {n[1]}"))
+
+        top5_edges = self._model.get_top5_archi()
+        self._view.txt_result1.controls.append(ft.Text(f"I 5 archi di peso maggiore sono:"))
+        for e in top5_edges:
+            self._view.txt_result1.controls.append(ft.Text(f"{e[0]}<->{e[1]}  |  peso ={e[2]["weight"]}"))
 
         self._view.btn_path.disabled = False
         self._view.update_page()
 
     def handle_path(self, e):
-        pass
+        self._view.txt_result2.controls.clear()
+        path, punteggio = self._model.cammino_ottimo()
+        self._view.txt_result2.controls.append(ft.Text(f"Il punteggio del percorso ottimo è {punteggio}"))
+        self._view.txt_result2.controls.append(ft.Text(f"Il percorso ottimo è costituito da {len(path)} nodi:"))
+        for p in path:
+            self._view.txt_result2.controls.append(ft.Text(f"{p} | densità = {p.Population/p.Area}"))
+
+        self._view.update_page()
 
     def _get_lat_lng_limits(self):
         self._min_lat, self._max_lat, self._min_lng, self._max_lng = self._model.get_lat_lng_limits()

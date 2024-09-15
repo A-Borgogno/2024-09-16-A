@@ -9,7 +9,7 @@ class View(ft.UserControl):
         self._page.title = "TdP 2024 - Esame del 16/09/2024 - B"
         self._page.horizontal_alignment = 'CENTER'
         self._page.window_width = 950
-        self._page.window_height = 700
+        self._page.window_height = 800
         self._page.theme_mode = ft.ThemeMode.LIGHT
         # controller (it is not initialized. Must be initialized in the main, after the controller is created)
         self._controller = None
@@ -49,6 +49,8 @@ class View(ft.UserControl):
         self.btn_path = ft.ElevatedButton(text="Calcola percorso",
                                           tooltip="Risolvi il punto 2",
                                           on_click=self._controller.handle_path)
+        self.btn_path.disabled = True
+
         row2 = ft.Row([self.btn_graph, self.btn_path],
                       alignment=ft.MainAxisAlignment.SPACE_EVENLY)
         self._page.controls.append(row2)
@@ -67,7 +69,7 @@ class View(ft.UserControl):
             alignment=ft.alignment.center,
             bgcolor=ft.colors.GREY_200,
             width=450,
-            height=450,
+            height=550,
             border_radius=10,
         )
         container2 = ft.Container(
@@ -77,7 +79,7 @@ class View(ft.UserControl):
             alignment=ft.alignment.center,
             bgcolor=ft.colors.GREY_200,
             width=450,
-            height=450,
+            height=550,
             border_radius=10,
         )
 
