@@ -135,15 +135,12 @@ class DAO():
         else:
             cursor = cnx.cursor(dictionary=True)
             query = """select s.state, sum(duration) as totale
-                        from sighting s
-                        where s.state in (select s.id
-                                            from state s, sighting s2 
-                                            where s2.state = s.id
-                                            and s.Lat > %s
-                                            and s.Lng > %s
-                                            and s2.shape = %s 
-                                            group by s2.state)
-                        group by s.state """
+                            from sighting s, state s2 
+                            where s.state = s2.id 
+                            and s2.Lat > %s
+                            and s2.Lng > %s
+                            and s.shape = %s 
+                            group by s.state"""
 
             cursor.execute(query, (lat, lon, shape))
 

@@ -59,11 +59,18 @@ class Controller:
         self._view.txt_result1.controls.append(ft.Text("I 5 archi di peso maggiore sono:"))
         for a in archiPeso[:5]:
             self._view.txt_result1.controls.append(ft.Text(f"{a[0]} <-> {a[1]} | peso = {a[2]["weight"]}"))
+        self._view.btn_path.disabled = False
         self._view.update_page()
 
 
     def handle_path(self, e):
-        pass
+        self._view.txt_result2.controls.clear()
+        bestPath, score = self._model.getBestPath()
+        self._view.txt_result2.controls.append(ft.Text("Trovato cammino ottimo"))
+        for node in bestPath:
+            self._view.txt_result2.controls.append(ft.Text(node))
+        self._view.txt_result2.controls.append(ft.Text(f"Punteggio percorso: {score}"))
+        self._view.update_page()
 
     def fill_ddshape(self):
         shapes = self._model.getShapes()
