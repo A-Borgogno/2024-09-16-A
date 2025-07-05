@@ -20,6 +20,9 @@ class State:
     def __hash__(self):
         return hash(self.id)
 
+    def __eq__(self, other):
+        return self.id == other.id
+
     def distance_HV(self, other):
         """
         Function that calculate the approximate geodesic distance between two sightings.

@@ -12,10 +12,61 @@ class Controller:
 
 
     def handle_graph(self, e):
-        pass
+        self._view.txt_result1.controls.clear()
+        lat = self._view.txt_latitude.value
+        if lat == "":
+            self._view.txt_result1.controls.append(ft.Text("Inserire la latitudine", color="red"))
+            self._view.update_page()
+            return
+        lon = self._view.txt_longitude.value
+        if lon == "":
+            self._view.txt_result1.controls.append(ft.Text("Inserire la longitudine", color="red"))
+            self._view.update_page()
+            return
+        try:
+            intLat = int(lat)
+            intLon = int(lon)
+        except ValueError:
+            self._view.txt_result1.controls.append(ft.Text("I valori inseriti devono essere dei numeri interi", color="red"))
+            self._view.update_page()
+            return
+        if self._model.getMinLat() > intLat or self._model.getMaxLat() < intLat:
+            self._view.txt_result1.controls.append(ft.Text(f"La latitudine deve essere compresa tra {self._model.getMinLat()} e {self._model.getMaxLat()}", color="red"))
+            self._view.update_page()
+            return
+        if self._model.getMinLon() > intLon or self._model.getMaxLon() < intLon:
+            self._view.txt_result1.controls.append(ft.Text(f"La longitudine deve essere compresa tra {self._model.getMinLon()} e {self._model.getMaxLon()}", color="red"))
+            self._view.update_page()
+            return
+        shape = self._view.ddshape.value
+        if not shape:
+            self._view.txt_result1.controls.append(ft.Text("Selezionare la forma", color="red"))
+            self._view.update_page()
+            return
+        self._view.txt_result1.controls.append(ft.Text("Caricamento in corso", weight=ft.FontWeight.BOLD))
+        self._view.update_page()
+        nodes, edges = self._model.buildGraph(intLat, intLon, shape)
+        self._view.txt_result1.controls.clear()
+        self._view.txt_result1.controls.append(ft.Text("Grafo creato correttamente"))
+        self._view.txt_result1.controls.append(ft.Text(f"Numero di vertici: {nodes}"))
+        self._view.txt_result1.controls.append(ft.Text(f"Numero di archi: {edges}"))
+        nodiGrado = self._model.getNodiGrado()
+        self._view.txt_result1.controls.append(ft.Text(""))
+        self._view.txt_result1.controls.append(ft.Text("I 5 nodi di grado maggiore sono:"))
+        for n in nodiGrado[:5]:
+            self._view.txt_result1.controls.append(ft.Text(f"{n} -> degree: {self._model.getGradoNodo(n)}"))
+        archiPeso = self._model.getArchiPeso()
+        self._view.txt_result1.controls.append(ft.Text("I 5 archi di peso maggiore sono:"))
+        for a in archiPeso[:5]:
+            self._view.txt_result1.controls.append(ft.Text(f"{a[0]} <-> {a[1]} | peso = {a[2]["weight"]}"))
+        self._view.update_page()
+
 
     def handle_path(self, e):
         pass
 
     def fill_ddshape(self):
-        pass
+        shapes = self._model.getShapes()
+        for s in shapes:
+            self._view.ddshape.options.append(ft.dropdown.Option(s))
+        self._view.update_page()
