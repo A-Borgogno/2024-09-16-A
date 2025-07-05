@@ -3,7 +3,7 @@ import copy
 from database.DAO import DAO
 import networkx as nx
 
-
+from model.state import State
 
 
 class Model:
@@ -81,3 +81,6 @@ class Model:
             peso = self._graph.get_edge_data(path[i], path[i+1])["weight"]
             score += peso/path[i].distance_HV(path[i+1])
         return score
+
+    def getDensita(self, node:State):
+        return node.Population/node.Area

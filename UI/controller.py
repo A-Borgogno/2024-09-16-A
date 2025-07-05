@@ -68,7 +68,7 @@ class Controller:
         bestPath, score = self._model.getBestPath()
         self._view.txt_result2.controls.append(ft.Text("Trovato cammino ottimo"))
         for node in bestPath:
-            self._view.txt_result2.controls.append(ft.Text(node))
+            self._view.txt_result2.controls.append(ft.Text(f"{node} | densità = {self._model.getDensita(node)}"))
         self._view.txt_result2.controls.append(ft.Text(f"Punteggio percorso: {score}"))
         self._view.update_page()
 
